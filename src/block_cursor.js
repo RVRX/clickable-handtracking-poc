@@ -28,3 +28,12 @@ export function SetBlockCursorPosition(left, top) {
     block_cursor.style.top = window.innerHeight * top + 'px';
     block_cursor.style.left = window.innerWidth * left + 'px';
 }
+
+export function SetBlockCursorPositionAndSimulateClick(left, top) {
+    block_cursor.style.top = window.innerHeight * top + 'px';
+    block_cursor.style.left = window.innerWidth * left + 'px';
+
+    let block_cursor_props = block_cursor.getBoundingClientRect();
+
+    document.elementFromPoint(block_cursor_props.x, block_cursor_props.y).click();
+}

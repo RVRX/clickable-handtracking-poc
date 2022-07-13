@@ -26,7 +26,6 @@
   "dependencies": {
     "@handtracking.io/yoha": "*",
     "copy-webpack-plugin": "^11.0.0",
-    "html-webpack-plugin": "^5.5.0",
-    "robotjs": "^0.6.0"
+    "html-webpack-plugin": "^5.5.0"
   }
 }

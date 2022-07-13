@@ -4,7 +4,7 @@
  * a pinch or fist gesture changes the color of the cursor.
  */
 import * as yoha from '@handtracking.io/yoha';
-import { SetBlockCursorColor, SetBlockCursorPosition, SetBlockCursorVisibility, InitializeBlockCursor } from './block_cursor';
+import { SetBlockCursorColor, SetBlockCursorPosition, SetBlockCursorVisibility, InitializeBlockCursor, SetBlockCursorPositionAndSimulateClick } from './block_cursor';
 
 async function Run() {
     // Download models.
@@ -35,6 +35,10 @@ async function Run() {
 
     const thresholds = yoha.RecommendedHandPoseProbabilityThresholds;
 
+    document.addEventListener('click', (e) => {
+        console.log('clicked: ' + e.target)
+    })
+
     // Run engine.
     // We configure small padding to avoid that users move their hand outside webcam view
     // when trying to move the cursor towards the border of the viewport.
@@ -48,15 +52,18 @@ async function Run() {
         // Change color depending on gesture.
         if (res.poses.fistProb > thresholds.FIST) {
             SetBlockCursorColor('red');
-        } else if (res.poses.pinchProb > thresholds.PINCH) {
-            SetBlockCursorColor('green');
         } else {
             SetBlockCursorColor('blue');
         }
 
         // Change cursor position.
         // We only use one coordinate here...
-        SetBlockCursorPosition(...res.coordinates[0]);
+        if (res.poses.pinchProb > thresholds.PINCH) {
+            SetBlockCursorColor('green')
+            SetBlockCursorPositionAndSimulateClick(...res.coordinates[0]);
+        } else {
+            SetBlockCursorPosition(...res.coordinates[0]);
+        }
     });
 }
 
