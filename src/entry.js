@@ -35,9 +35,23 @@ async function Run() {
 
     const thresholds = yoha.RecommendedHandPoseProbabilityThresholds;
 
-    document.addEventListener('click', (e) => {
-        console.log('clicked: ' + e.target)
-    })
+    // Create Demo Buttons
+    // Will log when "clicked" (pinch motion with hand)
+    function createButton(name) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.innerHTML = name;
+        button.className = 'btn-styled';
+        button.style.marginTop = '100px'
+        button.style.padding = '100px'
+        button.onclick = function () {
+            console.log(name + ' clicked!');
+        };
+        document.body.appendChild(button);
+    }
+    createButton("button 1");
+    createButton("button 2");
+    createButton("button 3");
 
     // Run engine.
     // We configure small padding to avoid that users move their hand outside webcam view
