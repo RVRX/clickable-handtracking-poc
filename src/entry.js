@@ -4,7 +4,7 @@
  * a pinch or fist gesture changes the color of the cursor.
  */
 import * as yoha from '@handtracking.io/yoha';
-import { SetCursorColor, SetCursorPosition, SetCursorVisibility, InitializeCursor } from './cursor';
+import { SetBlockCursorColor, SetBlockCursorPosition, SetBlockCursorVisibility, InitializeBlockCursor } from './block_cursor';
 
 async function Run() {
     // Download models.
@@ -16,7 +16,7 @@ async function Run() {
         }
     );
 
-    InitializeCursor();
+    InitializeBlockCursor();
 
     // Setup video feed.
     const streamRes = await yoha.CreateMaxFpsMaxResStream();
@@ -40,23 +40,23 @@ async function Run() {
     // when trying to move the cursor towards the border of the viewport.
     yoha.StartTfjsWasmEngine({padding: 0.05}, wasmConfig, video, modelFiles, res => {
         if (res.isHandPresentProb < thresholds.IS_HAND_PRESENT) {
-            SetCursorVisibility(false);
+            SetBlockCursorVisibility(false);
             return;
         }
-        SetCursorVisibility(true);
+        SetBlockCursorVisibility(true);
 
         // Change color depending on gesture.
         if (res.poses.fistProb > thresholds.FIST) {
-            SetCursorColor('red');
+            SetBlockCursorColor('red');
         } else if (res.poses.pinchProb > thresholds.PINCH) {
-            SetCursorColor('green');
+            SetBlockCursorColor('green');
         } else {
-            SetCursorColor('blue');
+            SetBlockCursorColor('blue');
         }
 
         // Change cursor position.
         // We only use one coordinate here...
-        SetCursorPosition(...res.coordinates[0]);
+        SetBlockCursorPosition(...res.coordinates[0]);
     });
 }
 
