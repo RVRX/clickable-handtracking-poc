@@ -30,9 +30,12 @@ export function SetBlockCursorPosition(left, top) {
 }
 
 export function SimulateClick() {
-    SetBlockCursorColor('green');
-    let block_cursor_props = block_cursor.getBoundingClientRect();
-    document.elementFromPoint(block_cursor_props.x, block_cursor_props.y).click();
+    // if we are already in a clicked state, do not repeat click
+    if (block_cursor.style.backgroundColor !== 'green') {
+        SetBlockCursorColor('green');
+        let block_cursor_props = block_cursor.getBoundingClientRect();
+        document.elementFromPoint(block_cursor_props.x, block_cursor_props.y).click();
+    }
 }
 
 export function SetBlockCursorPositionAndSimulateClick(left, top) {
